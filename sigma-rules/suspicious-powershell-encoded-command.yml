@@ -1,0 +1,55 @@
+title: Suspicious PowerShell Encoded Command Execution
+id: 7b7d9f7d-6e4e-4f8a-9f54-1e7c6fd9b2a1
+status: test
+description: Detects PowerShell execution using encoded commands, execution policy bypass, NoProfile, hidden window style, or suspicious script-related command-line patterns.
+author: SOC Blue Team Lab
+date: 2026-07-12
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection_img:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+  selection_encoded:
+    CommandLine|contains:
+      - '-EncodedCommand'
+      - '-enc'
+      - '/EncodedCommand'
+      - '/enc'
+  selection_bypass:
+    CommandLine|contains:
+      - '-ExecutionPolicy Bypass'
+      - '-ep Bypass'
+      - 'ExecutionPolicy Bypass'
+  selection_noprofile:
+    CommandLine|contains:
+      - '-NoProfile'
+      - '-nop'
+  selection_hidden:
+    CommandLine|contains:
+      - '-WindowStyle Hidden'
+      - '-w hidden'
+      - 'WindowStyle Hidden'
+  selection_suspicious_strings:
+    CommandLine|contains:
+      - 'FromBase64String'
+      - 'DownloadString'
+      - 'IEX'
+      - 'Invoke-Expression'
+      - 'Net.WebClient'
+  condition: selection_img and selection_encoded and (selection_bypass or selection_noprofile or selection_hidden or selection_suspicious_strings)
+falsepositives:
+  - Legitimate administrative scripts
+  - Software deployment tools
+  - Endpoint management platforms
+  - Security testing in approved lab environments
+level: medium
+tags:
+  - attack.execution
+  - attack.defense_evasion
+  - attack.t1059
+  - attack.t1059.001
+  - attack.t1027
+  - attack.t1562.001

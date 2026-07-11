@@ -1,0 +1,36 @@
+Log Name: Security
+Source: Microsoft-Windows-Security-Auditing
+Event ID: 4688
+Task Category: Process Creation
+Level: Information
+Keywords: Audit Success
+Time Created: 2026-07-12 09:15:08 UTC
+Computer: WIN-SOC-LAB-01
+
+Event Description:
+A new process has been created.
+
+Subject:
+  Security ID: S-1-5-21-0000000000-0000000000-0000000000-1001
+  Account Name: LAB-USER01
+  Account Domain: SOC-LAB
+  Logon ID: 0x123456
+
+Process Information:
+  New Process ID: 0x2f40
+  New Process Name: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+  Token Elevation Type: %%1936
+  Mandatory Label: Mandatory Label\Medium Mandatory Level
+  Creator Process ID: 0x1c88
+  Creator Process Name: C:\Windows\System32\cmd.exe
+  Process Command Line: powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand <redacted-encoded-training-content>
+
+Additional Context:
+  Hostname: WIN-SOC-LAB-01
+  Username: SOC-LAB\LAB-USER01
+  Parent Process: cmd.exe
+  New Process: powershell.exe
+  Timestamp: 2026-07-12 09:15:08 UTC
+
+Short Analyst Note:
+This fake training event shows PowerShell running with NoProfile, ExecutionPolicy Bypass, and EncodedCommand. These command-line options may be used during suspicious activity and should be reviewed with surrounding endpoint telemetry. The encoded content is intentionally redacted and no harmful payload is included.
